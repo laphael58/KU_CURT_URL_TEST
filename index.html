@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>악성 URL 탐지기</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #343a40;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4263eb;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            padding: 0 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #364fc7;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: none;
+            text-align: center;
+            font-size: 18px;
+        }
+        .safe {
+            background-color: #d3f9d8;
+            color: #2b8a3e;
+            border: 1px solid #8ce99a;
+        }
+        .dangerous {
+            background-color: #ffe3e3;
+            color: #c92a2a;
+            border: 1px solid #ffa8a8;
+        }
+        .loading {
+            text-align: center;
+            display: none;
+        }
+        .features {
+            margin-top: 30px;
+            background-color: #f1f3f5;
+            padding: 20px;
+            border-radius: 4px;
+        }
+        .feature-item {
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        h3 {
+            color: #495057;
+            margin-top: 30px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #868e96;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>악성 URL 탐지기</h1>
+        <p>검사하고 싶은 URL을 입력하면 AI 머신러닝 모델이 해당 URL이 악성인지 정상인지 분석합니다.</p>
+        
+        <div class="input-group">
+            <input type="text" id="url-input" placeholder="https://example.com" />
+            <button onclick="checkUrl()">검사하기</button>
+        </div>
+        
+        <div class="loading" id="loading">
+            <p>URL을 분석 중입니다...</p>
+        </div>
+        
+        <div id="result"></div>
+
+        <div class="features" id="features-container" style="display: none;">
+            <h3>URL 특성 분석</h3>
+            <div class="feature-item">URL 길이: <span id="length"></span></div>
+            <div class="feature-item">서브도메인 수: <span id="subdomain-count"></span></div>
+            <div class="feature-item">특수문자 수: <span id="special-char-count"></span></div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>이 서비스는 머신러닝 기반 URL 탐지 시스템을 사용합니다. 100% 정확도를 보장하지 않으니 참고용으로만 사용하세요.</p>
+    </div>
+
+    <script>
+        function checkUrl() {
+            const url = document.getElementById('url-input').value.trim();
+            if (!url) {
+                alert('URL을 입력해주세요.');
+                return;
+            }
+
+            // 로딩 표시 시작
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('features-container').style.display = 'none';
+            
+            // API 호출
+            fetch('/api/check_url', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url: url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                
+                // 에러 처리
+                if (data.error) {
+                    alert('오류가 발생했습니다: ' + data.error);
+                    return;
+                }
+                
+                // 결과 표시
+                const resultElement = document.getElementById('result');
+                resultElement.style.display = 'block';
+                
+                if (data.is_malicious) {
+                    resultElement.className = 'dangerous';
+                    resultElement.textContent = '위험: 이 URL은 악성으로 탐지되었습니다!';
+                } else {
+                    resultElement.className = 'safe';
+                    resultElement.textContent = '안전: 이 URL은 정상으로 판단됩니다.';
+                }
+                
+                // 특성 표시
+                if (data.features) {
+                    document.getElementById('features-container').style.display = 'block';
+                    document.getElementById('length').textContent = data.features.length;
+                    document.getElementById('subdomain-count').textContent = data.features.subdomain_count;
+                    document.getElementById('special-char-count').textContent = data.features.special_char_count;
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                alert('오류가 발생했습니다: ' + error.message);
+            });
+        }
+    </script>
+</body>
+</html>
