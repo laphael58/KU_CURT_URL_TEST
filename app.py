@@ -101,6 +101,11 @@ def check_url():
     
     return jsonify(result)
 
+# 개발 모드
+# if __name__ == '__main__':
+#     logger.info("악성 URL 탐지 서비스가 시작되었습니다.")
+#     app.run(debug=True)
+
 if __name__ == '__main__':
     logger.info("악성 URL 탐지 서비스가 시작되었습니다.")
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
