@@ -1,6 +1,11 @@
 # 고려대학교 CURT 프로젝트 (악성 URL 탐지 사이트)
+고려대학교 CURT 프로젝트 ( 악성 URL 탐지 사이트 )
 
-![CURT 로고](https://via.placeholder.com/150)
+## 사용 방법
+
+[ 악성 URL 탐지 사이트 ](https://laphael58.pythonanywhere.com/) 접속 후  
+악성 URL인지 확인할 URL 입력 후 검사하기 클릭  
+검사 후 URL 입력란 아래 검사 결과 출력  
 
 ## 프로젝트 소개
 
@@ -22,67 +27,6 @@ CURT(Check URL in Real Time)는 머신러닝 기술을 활용하여 웹 URL의 �
 - **Machine Learning**: scikit-learn, joblib, numpy
 - **Deployment**: PythonAnywhere
 
-## 설치 및 실행 방법
-
-### 로컬 환경에서 실행하기
-
-1. 저장소 클론
-   ```bash
-   git clone https://github.com/yourusername/curt-project.git
-   cd curt-project
-   ```
-
-2. 가상환경 설정 및 패키지 설치
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
-
-3. 애플리케이션 실행
-   ```bash
-   python app.py
-   ```
-
-4. 웹 브라우저에서 `http://localhost:5000` 접속
-
-### 배포 방법 (PythonAnywhere)
-
-1. PythonAnywhere 계정 생성 및 로그인
-
-2. Bash 콘솔 열기
-
-3. 프로젝트 클론
-   ```bash
-   git clone https://github.com/yourusername/curt-project.git
-   ```
-
-4. 가상환경 설정 및 패키지 설치
-   ```bash
-   mkvirtualenv --python=python3.9 curt-env
-   pip install -r requirements.txt
-   ```
-
-5. Web 탭에서 새 웹앱 생성
-   - Flask 선택
-   - Python 3.9 선택
-   - 소스 코드 경로 설정
-
-6. WSGI 파일 수정
-   - 올바른 경로와 앱 이름 설정
-
-## 프로젝트 구조
-
-```
-project/
-├── app.py                   # Flask 애플리케이션 메인 파일
-├── templates/               # HTML 템플릿
-│   └── index.html           # 메인 페이지 템플릿
-├── static/                  # 정적 파일 (CSS, JS)
-├── malicious_url_models.pkl # 학습된 머신러닝 모델
-└── requirements.txt         # 필요한 파이썬 패키지 목록
-```
-
 ## 모델 학습 방법
 
 이 프로젝트에서 사용된 모델은 다음 특성을 기반으로 학습되었습니다:
@@ -96,14 +40,6 @@ project/
 2. `train_model.py` 스크립트 실행
 3. 생성된 모델 파일을 프로젝트 디렉토리에 복사
 
-## 기여 방법
-
-1. 이 저장소를 포크합니다.
-2. 새 브랜치를 생성합니다: `git checkout -b feature-name`
-3. 변경사항을 커밋합니다: `git commit -m 'Add some feature'`
-4. 브랜치를 푸시합니다: `git push origin feature-name`
-5. Pull Request를 제출합니다.
-
 ## 팀원
 
 - 고건우 (인공지능사이버보안학과)
@@ -111,13 +47,3 @@ project/
 - 신승환 (인공지능사이버보안학과)
 - 양진영 (인공지능사이버보안학과)
 - 전성하 (인공지능사이버보안학과)
-
-## 라이센스
-
-이 프로젝트는 MIT 라이센스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
-
-## 참고 자료
-
-- [악성 URL 탐지 관련 연구 논문](https://example.com)
-- [Flask 공식 문서](https://flask.palletsprojects.com/)
-- [scikit-learn 공식 문서](https://scikit-learn.org/stable/)
