@@ -16,7 +16,12 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # 모델 파일 경로 설정
-MODEL_PATH = 'malicious_url_models.pkl'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, 'malicious_url_models.pkl')
+
+# 디버깅을 위한 로그 추가
+logger.info(f"앱 시작. 모델 파일 경로: {MODEL_PATH}")
+logger.info(f"파일 존재 여부: {os.path.exists(MODEL_PATH)}")
 
 # 모델 로드 함수
 def load_models():
